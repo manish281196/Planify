@@ -64,7 +64,72 @@ const styles = StyleSheet.create({
   },
 });
 
-const cards = ['First', 'Second'];
+const cards = [
+  {
+    brandName: 'Bazar India',
+    services: ['Equity', 'DMAT', 'Pvt Ltd'],
+    stockPrice: '\u20B9 70',
+    description:
+      'Bazar India is a retail chain that offers a wide range of apparel and general merchandise with latest fashion at affordable price...',
+    progress: '67%',
+    raisedDta: [
+      {
+        name: 'To Raised',
+        value: '\u20B9 15,00,00,000',
+      },
+      {
+        name: 'Launch Date',
+        value: '24 Days Left',
+      },
+    ],
+    otherInfo: [
+      {
+        name: 'Raised',
+        value: '\u20B9 336,792',
+      },
+      {
+        name: 'Equity',
+        value: '17.42%',
+      },
+      {
+        name: 'Investors',
+        value: '175',
+      },
+    ],
+  },
+  {
+    brandName: 'Madbow',
+    services: ['CCPS', 'Physical', 'Public Ltd'],
+    stockPrice: '\u20B9 60',
+    description:
+      'Madbow ventures Limited is an indian e-commerce lifestyle fashion brand that makes creative, distinctive fashion, ... ',
+    progress: '100%',
+    raisedDta: [
+      {
+        name: 'To Raised',
+        value: `\u20B9 15,00,00,000`,
+      },
+      {
+        name: 'Launch Date',
+        value: '24 Days Left',
+      },
+    ],
+    otherInfo: [
+      {
+        name: 'Raised',
+        value: '\u20B9 426,792',
+      },
+      {
+        name: 'Equity',
+        value: '20.50%',
+      },
+      {
+        name: 'Investors',
+        value: '125',
+      },
+    ],
+  },
+];
 
 const pills = [
   'All',
@@ -101,17 +166,20 @@ export class StartupScreen extends React.Component {
   renderPillsCarousel = () => {
     return (
       <View>
-        <ScrollView horizontal={true} style={styles.pillsContainer}>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          style={styles.pillsContainer}>
           {pills.map(this.renderPillItem)}
         </ScrollView>
       </View>
     );
   };
 
-  renderCardItem = () => {
+  renderCardItem = item => {
     return (
       <View>
-        <CustomCard />
+        <CustomCard data={item} />
       </View>
     );
   };

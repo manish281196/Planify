@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, StyleSheet, Image, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  ScrollView,
+} from 'react-native';
 
 const {width: windowWidth} = Dimensions.get('window');
 
@@ -56,6 +63,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,
+    marginTop: 10,
   },
   StockItemList: {
     fontSize: 14,
@@ -81,6 +89,13 @@ const styles = StyleSheet.create({
     color: '#000',
     fontWeight: 'bold',
   },
+  stockInfoSubtitleProgress: {
+    fontSize: 18,
+    color: '#000',
+    fontWeight: 'bold',
+    borderWidth: 2,
+    borderColor: '##ff006c',
+  },
   otherInfoItemContainer: {
     alignSelf: 'center',
   },
@@ -90,72 +105,74 @@ const styles = StyleSheet.create({
   },
 });
 
-const StockPricing = ['$70'];
-const StockList = ['Equity', 'DMAT', 'Pvt Ltd'];
-const RaisedValue = ['$336'];
-const Equity = ['17.45%'];
-const Investor = ['175'];
-
 export class CustomCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.cardData = props.data;
+  }
+
   renderStockListItem = item => (
     <View style={styles.stockListItemContainer}>
       <Text style={styles.StockItemList}>{item}</Text>
     </View>
   );
 
-  renderBasicInfo = () => (
-    <View style={styles.basicInfoContainer}>
-      <View style={{flexDirection: 'row'}}>
-        <Image
-          source={require('../../assets/blocks.png')}
-          resizeMode="contain"
-          style={styles.brandIcon}
-        />
-        <View style={styles.stockNameAndListSection}>
-          <Text style={styles.StockName}>Stock Bazar</Text>
-          <View style={{flexDirection: 'row'}}>
-            {StockList.map(this.renderStockListItem)}
+  renderBasicInfo = () => {
+    const {brandName, services, stockPrice} = this.cardData;
+    return (
+      <View style={styles.basicInfoContainer}>
+        <View style={{flexDirection: 'row'}}>
+          <Image
+            source={require('../../assets/blocks.png')}
+            resizeMode="contain"
+            style={styles.brandIcon}
+          />
+          <View style={styles.stockNameAndListSection}>
+            <Text style={styles.StockName}>{brandName}</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {services.map(this.renderStockListItem)}
+            </ScrollView>
           </View>
         </View>
+        <Text style={styles.StockItemPrice}>{stockPrice}</Text>
       </View>
-      <Text style={styles.StockItemPrice}>70</Text>
+    );
+  };
+
+  renderDescription = () => (
+    <Text style={styles.description}>{this.cardData.description}</Text>
+  );
+
+  renderStockInfoItem = item => (
+    <View>
+      <Text style={styles.stockInfoTitle}>{item.name}</Text>
+      <Text style={styles.stockInfoSubtitle}>{item.value}</Text>
     </View>
   );
 
-  renderDescription = () => (
-    <Text style={styles.description}>
-      Bazar India is a retail chain that offers a wide range of apparel and
-      general merchandise with latest fashion at affordable price...
-    </Text>
-  );
-
-  renderStockInfoItem = () => (
+  renderStockInfoItemProgress = () => (
     <View>
-      <Text style={styles.stockInfoTitle}>To Raised</Text>
-      <Text style={styles.stockInfoSubtitle}>15,00,00,000</Text>
+      <Text style={styles.stockInfoSubtitle}>{this.cardData.progress}</Text>
     </View>
   );
 
   renderStockInfo = () => (
-    <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-      {this.renderStockInfoItem()}
-      {this.renderStockInfoItem()}
-      {this.renderStockInfoItem()}
+    <View style={styles.basicInfoContainer}>
+      {this.cardData.raisedDta.map(this.renderStockInfoItem)}
+      {this.renderStockInfoItemProgress()}
     </View>
   );
 
-  renderOtherInfoItem = () => (
+  renderOtherInfoItem = item => (
     <View style={styles.otherInfoItemContainer}>
-      <Text style={styles.stockInfoSubtitle}>333,672</Text>
-      <Text style={styles.stockInfoTitle}>Raised</Text>
+      <Text style={styles.stockInfoSubtitle}>{item.value}</Text>
+      <Text style={styles.stockInfoTitle}>{item.name}</Text>
     </View>
   );
 
   renderOtherInfo = () => (
     <View style={styles.basicInfoContainer}>
-      {this.renderOtherInfoItem()}
-      {this.renderOtherInfoItem()}
-      {this.renderOtherInfoItem()}
+      {this.cardData.otherInfo.map(this.renderOtherInfoItem)}
     </View>
   );
 
